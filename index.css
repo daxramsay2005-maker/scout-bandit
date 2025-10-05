@@ -1,0 +1,451 @@
+:root {
+    --primary-color: #6a1b9a; /* A rich purple */
+    --primary-color-hover: #4a148c;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --text-secondary: #666;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --highlight-color: rgba(106, 27, 154, 0.1);
+    --edit-background-color: #fef9c3;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+#app {
+    width: 100%;
+    max-width: 1200px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.control-group {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.control-group h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#auth-container, #sheet-container, #ai-search-container {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#sheet-url-input, #city-input, #state-input {
+    flex-grow: 1;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: box-shadow 0.2s;
+    min-width: 150px;
+}
+#sheet-url-input:focus, #city-input:focus, #state-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.2);
+    border-color: var(--primary-color);
+}
+
+#authorize-button, #signout-button, #load-sheet-button, #ai-search-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+#authorize-button:hover:not(:disabled),
+#signout-button:hover:not(:disabled),
+#load-sheet-button:hover:not(:disabled),
+#ai-search-button:hover:not(:disabled) {
+    background-color: var(--primary-color-hover);
+    transform: translateY(-2px);
+}
+
+#signout-button {
+    background-color: #757575;
+}
+#signout-button:hover {
+    background-color: #616161;
+}
+
+
+.main-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+#search-container {
+    flex-grow: 1;
+    max-width: 400px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: box-shadow 0.2s;
+}
+
+#search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.2);
+    border-color: var(--primary-color);
+}
+
+#sort-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#sort-by-select, #sort-direction-button {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--card-background);
+}
+
+#sort-direction-button {
+    font-weight: 700;
+    cursor: pointer;
+    width: 60px;
+    text-align: center;
+}
+
+
+#view-favorites-button, #export-button, #share-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#view-favorites-button:hover, #export-button:hover, #share-button:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--primary-color);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: block;
+    margin: 2rem auto;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#content-wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+#map {
+    flex: 1 1 45%;
+    height: 80vh;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px var(--shadow-color);
+    position: sticky;
+    top: 2rem;
+}
+
+#results-container {
+    flex: 1 1 55%;
+    display: grid;
+    gap: 1.5rem;
+    min-width: 0;
+}
+
+.salon-card {
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.3s;
+    /* Removed cursor pointer from the whole card to avoid confusion with non-clickable areas */
+}
+
+.salon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px var(--shadow-color);
+}
+
+.salon-card.highlighted {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--highlight-color);
+}
+
+.salon-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.salon-card [contenteditable="true"] {
+    outline: 2px dashed var(--primary-color);
+    background-color: var(--edit-background-color);
+    padding: 0.2rem;
+    border-radius: 4px;
+}
+
+.salon-card .rating {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #f59e0b; /* Gold color for rating */
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.salon-card .address {
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.salon-card .hours {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.salon-card .hours strong {
+    color: var(--text-color);
+}
+
+.salon-card .contact-info {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    word-break: break-word;
+}
+
+.salon-card .contact-info strong {
+    color: var(--text-color);
+}
+
+.salon-card .contact-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.salon-card .contact-info a:hover {
+    text-decoration: underline;
+}
+
+.salon-card .website-info {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    word-break: break-word;
+}
+
+.salon-card .website-info strong {
+    color: var(--text-color);
+}
+
+.salon-card .website-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.salon-card .website-info a:hover {
+    text-decoration: underline;
+}
+
+.salon-card-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.salon-card-actions > * {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.salon-card .sources-container {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    word-break: break-word; /* To handle long links */
+}
+
+.salon-card .sources-container strong {
+    color: var(--text-color);
+}
+
+.salon-card .sources-container .source-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.salon-card .sources-container .source-link:hover {
+    text-decoration: underline;
+}
+
+.salon-card .salon-action-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.salon-card .salon-action-link:hover {
+    text-decoration: underline;
+}
+
+.salon-card .social-links {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.salon-card .social-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.salon-card .social-link:hover {
+    color: var(--primary-color);
+}
+
+.salon-card .social-link svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+
+.salon-card .salon-action-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: #fff;
+    background-color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.1s;
+    border: none;
+}
+
+.salon-card .salon-action-button:hover {
+    background-color: var(--primary-color-hover);
+    transform: translateY(-2px);
+}
+
+.salon-card .edit-button, .salon-card .save-button {
+    background-color: #546e7a;
+}
+.salon-card .edit-button:hover, .salon-card .save-button:hover {
+    background-color: #455a64;
+}
+
+
+.salon-card .favorite-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: var(--primary-color);
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.1s;
