@@ -1,5 +1,5 @@
 {
-  "name": "bandit-scout ai",
-  "description": "scraper  google for leads",
+  "name": "Scout AI",
+  "description": "a bandit product - it's like Google for leads",
   "requestFramePermissions": []
 }

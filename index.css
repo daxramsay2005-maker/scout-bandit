@@ -1,14 +1,16 @@
 :root {
-    --primary-color: #6a1b9a; /* A rich purple */
-    --primary-color-hover: #4a148c;
-    --background-color: #f8f9fa;
-    --card-background: #ffffff;
-    --text-color: #333;
-    --text-secondary: #666;
-    --border-color: #e0e0e0;
-    --shadow-color: rgba(0, 0, 0, 0.08);
-    --highlight-color: rgba(106, 27, 154, 0.1);
-    --edit-background-color: #fef9c3;
+    --primary-color: #F25A5A;
+    --primary-color-hover: #E04A4A;
+    --background-color: #FFF8F5;
+    --card-background: #FFFFFF;
+    --text-color: #212121;
+    --text-secondary: #666666;
+    --border-color: #EAEAEA;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --error-color: #c62828;
+    --error-background-color: #ffebee;
+    --success-color: #166534;
+    --success-background-color: #f0fdf4;
 }
 
 * {
@@ -34,26 +36,32 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 header h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--text-color);
     margin-bottom: 0.5rem;
 }
 
+header h1 .font-light {
+    font-weight: 400;
+}
+
 header p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .controls-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -61,138 +69,245 @@ header p {
 
 .control-group {
     background: var(--card-background);
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 2rem;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 2px 4px var(--shadow-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .control-group h3 {
     margin-bottom: 1rem;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--primary-color);
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
 }
 
-#auth-container, #sheet-container, #ai-search-container {
+.control-group-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+#auth-container {
     display: flex;
+    align-items: center;
     gap: 1rem;
-    width: 100%;
-    flex-wrap: wrap;
+    margin-top: 1.5rem;
 }
 
-#sheet-url-input, #city-input, #state-input {
+#auth-error-message {
+    color: var(--error-color);
+    background-color: var(--error-background-color);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--error-color);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: none;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+#auth-error-message.visible {
+    display: block;
+}
+
+#auth-error-message a {
+    color: var(--error-color);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: #f1f5f9;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+}
+
+.user-profile img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.user-profile span {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+#ai-search-container {
+    display: grid;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-wrapper label {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.location-inputs {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1.5rem;
+}
+
+#ai-search-container button {
+    justify-self: start;
+}
+
+input[type="text"], input[type="search"] {
     flex-grow: 1;
     padding: 0.8rem 1rem;
     font-size: 1rem;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: box-shadow 0.2s;
-    min-width: 150px;
+    border-radius: 12px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    min-width: 0;
+    background-color: #fff;
 }
-#sheet-url-input:focus, #city-input:focus, #state-input:focus {
+
+input[type="text"]:focus, input[type="search"]:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.2);
+    box-shadow: 0 0 0 4px rgba(242, 90, 90, 0.1);
     border-color: var(--primary-color);
 }
 
-#authorize-button, #signout-button, #load-sheet-button, #ai-search-button {
+button {
     padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    position: relative;
+    min-height: 50px;
+    border: none;
+}
+
+/* Primary Button Style */
+#ai-search-button, #authorize-button {
     color: #fff;
     background-color: var(--primary-color);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(242, 90, 90, 0.2);
 }
 
-#authorize-button:hover:not(:disabled),
-#signout-button:hover:not(:disabled),
-#load-sheet-button:hover:not(:disabled),
-#ai-search-button:hover:not(:disabled) {
+#ai-search-button:hover:not(:disabled), #authorize-button:hover:not(:disabled) {
     background-color: var(--primary-color-hover);
     transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(242, 90, 90, 0.3);
 }
 
+/* Secondary/Signout Button Style */
 #signout-button {
-    background-color: #757575;
+    color: var(--text-color);
+    background-color: #f1f5f9;
 }
-#signout-button:hover {
-    background-color: #616161;
+
+#signout-button:hover:not(:disabled) {
+    background-color: #e2e8f0;
 }
 
 
 .main-actions {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
     margin-bottom: 2rem;
     flex-wrap: wrap;
 }
 
-#search-container {
+.filters-group {
+    display: flex;
+    gap: 1rem;
     flex-grow: 1;
-    max-width: 400px;
+    align-items: flex-end;
+    flex-wrap: wrap;
 }
 
-#search-input {
-    width: 100%;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: box-shadow 0.2s;
+.filters-group .input-wrapper {
+    flex-grow: 1;
+    min-width: 150px;
 }
 
-#search-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.2);
-    border-color: var(--primary-color);
-}
-
-#sort-container {
+.checkbox-wrapper {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding-bottom: 0.8rem;
+    white-space: nowrap;
 }
 
-#sort-by-select, #sort-direction-button {
-    padding: 0.6rem;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--card-background);
-}
-
-#sort-direction-button {
-    font-weight: 700;
+.checkbox-wrapper label {
+    margin-bottom: 0;
     cursor: pointer;
-    width: 60px;
-    text-align: center;
+    color: var(--text-secondary);
 }
 
+.export-actions {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+}
 
-#view-favorites-button, #export-button, #share-button {
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    font-weight: 500;
+/* Outline Button Style */
+#export-csv-button, #save-to-sheets-button, #save-to-drive-button {
     color: var(--primary-color);
     background-color: transparent;
     border: 1px solid var(--primary-color);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
 }
 
-#view-favorites-button:hover, #export-button:hover, #share-button:hover {
+#export-csv-button:hover:not(:disabled),
+#save-to-sheets-button:hover:not(:disabled),
+#save-to-drive-button:hover:not(:disabled) {
     background-color: var(--primary-color);
     color: #fff;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#status-message {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+#status-message.visible {
+    opacity: 1;
+}
+
+#status-message.success {
+    background-color: var(--success-background-color);
+    color: var(--success-color);
+}
+
+#status-message.error {
+    background-color: var(--error-background-color);
+    color: var(--error-color);
 }
 
 .loader {
@@ -212,12 +327,8 @@ header p {
 }
 
 @keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 #content-wrapper {
@@ -229,9 +340,9 @@ header p {
 #map {
     flex: 1 1 45%;
     height: 80vh;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 6px var(--shadow-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
     position: sticky;
     top: 2rem;
 }
@@ -243,209 +354,235 @@ header p {
     min-width: 0;
 }
 
-.salon-card {
+#results-container .placeholder-text {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 2rem;
+}
+
+.business-card {
     background-color: var(--card-background);
     padding: 1.5rem;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 6px var(--shadow-color);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.3s;
-    /* Removed cursor pointer from the whole card to avoid confusion with non-clickable areas */
-}
-
-.salon-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px var(--shadow-color);
-}
-
-.salon-card.highlighted {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--highlight-color);
-}
-
-.salon-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
 }
 
-.salon-card [contenteditable="true"] {
-    outline: 2px dashed var(--primary-color);
-    background-color: var(--edit-background-color);
-    padding: 0.2rem;
-    border-radius: 4px;
+.business-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
 }
 
-.salon-card .rating {
-    margin-bottom: 0.5rem;
+.business-card .card-header {
+    margin-bottom: 0.75rem;
+}
+
+.business-card h3 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.business-card .rating {
+    margin-bottom: 0.75rem;
     font-weight: 500;
-    color: #f59e0b; /* Gold color for rating */
+    color: var(--primary-color);
     display: flex;
     align-items: center;
     gap: 0.25rem;
 }
 
-.salon-card .address {
-    font-style: italic;
+.business-card .address {
+    font-style: normal;
     color: var(--text-secondary);
     margin-bottom: 1rem;
-    cursor: pointer;
-}
-
-.salon-card .hours {
-    margin-top: 1rem;
     font-size: 0.9rem;
-    color: var(--text-secondary);
 }
 
-.salon-card .hours strong {
-    color: var(--text-color);
-}
-
-.salon-card .contact-info {
+.business-card .business-details p {
     margin-top: 0.5rem;
     font-size: 0.9rem;
     color: var(--text-secondary);
-    word-break: break-word;
+    line-height: 1.5;
 }
 
-.salon-card .contact-info strong {
+.business-card .business-details p strong {
     color: var(--text-color);
-}
-
-.salon-card .contact-info a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.salon-card .contact-info a:hover {
-    text-decoration: underline;
-}
-
-.salon-card .website-info {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    word-break: break-word;
-}
-
-.salon-card .website-info strong {
-    color: var(--text-color);
-}
-
-.salon-card .website-info a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.salon-card .website-info a:hover {
-    text-decoration: underline;
-}
-
-.salon-card-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.salon-card-actions > * {
-    pointer-events: auto;
-    cursor: pointer;
-}
-
-.salon-card .sources-container {
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    word-break: break-word; /* To handle long links */
-}
-
-.salon-card .sources-container strong {
-    color: var(--text-color);
-}
-
-.salon-card .sources-container .source-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    margin-left: 4px;
-}
-
-.salon-card .sources-container .source-link:hover {
-    text-decoration: underline;
-}
-
-.salon-card .salon-action-link {
-    color: var(--primary-color);
-    text-decoration: none;
     font-weight: 500;
 }
 
-.salon-card .salon-action-link:hover {
+.business-card a {
+    color: var(--primary-color);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.business-card a:hover {
     text-decoration: underline;
 }
 
-.salon-card .social-links {
+.social-link {
+    text-transform: capitalize;
+}
+
+
+.error {
+    background-color: var(--error-background-color);
+    color: var(--error-color);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ef9a9a;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
-    gap: 0.75rem;
     align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
-.salon-card .social-link {
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    font-size: 2.5rem;
+    cursor: pointer;
     color: var(--text-secondary);
-    text-decoration: none;
-    display: inline-block;
-    transition: color 0.2s;
+    line-height: 1;
 }
 
-.salon-card .social-link:hover {
+.modal-body p {
+    margin-bottom: 0.75rem;
+}
+.modal-body strong {
+    color: var(--text-color);
+    font-weight: 500;
+}
+.modal-body a {
     color: var(--primary-color);
+    text-decoration: none;
+}
+.modal-body a:hover {
+    text-decoration: underline;
 }
 
-.salon-card .social-link svg {
+/* Loading spinner styles for buttons */
+button.loading .button-text {
+    visibility: hidden;
+}
+
+button.loading::after {
+    content: '';
+    position: absolute;
     width: 24px;
     height: 24px;
-    fill: currentColor;
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
+    border: 3px solid;
+    border-radius: 50%;
+    animation: rotation 0.8s linear infinite;
 }
 
-
-.salon-card .salon-action-button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    color: #fff;
-    background-color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.2s, transform 0.1s;
-    border: none;
+/* Primary buttons (dark background) get a white spinner */
+button[id*="ai-search-button"].loading::after,
+button[id*="authorize-button"].loading::after,
+button[id*="signout-button"].loading::after {
+    border-color: rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
 }
 
-.salon-card .salon-action-button:hover {
-    background-color: var(--primary-color-hover);
-    transform: translateY(-2px);
+/* Secondary buttons (light background) get a pink spinner */
+button[id*="export-csv-button"].loading::after,
+button[id*="save-to-sheets-button"].loading::after,
+button[id*="save-to-drive-button"].loading::after {
+    border-color: rgba(242, 90, 90, 0.4);
+    border-top-color: var(--primary-color);
 }
 
-.salon-card .edit-button, .salon-card .save-button {
-    background-color: #546e7a;
-}
-.salon-card .edit-button:hover, .salon-card .save-button:hover {
-    background-color: #455a64;
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    #content-wrapper {
+        flex-direction: column;
+    }
+    #map {
+        width: 100%;
+        height: 400px;
+        position: static;
+        flex: none;
+    }
+    #results-container {
+        width: 100%;
+        flex: none;
+    }
 }
 
-
-.salon-card .favorite-button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    color: var(--primary-color);
-    background-color: transparent;
-    border: 1px solid var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s, transform 0.1s;
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+    header h1 {
+        font-size: 2.5rem;
+    }
+    .main-actions, #sheet-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .export-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    #ai-search-container {
+        gap: 1rem;
+    }
+    #ai-search-container button {
+        width: 100%;
+    }
+    .location-inputs {
+        grid-template-columns: 1fr;
+    }
+    .business-card {
+        padding: 1rem;
+    }
+    .modal-content {
+        padding: 1.5rem;
+    }
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+}

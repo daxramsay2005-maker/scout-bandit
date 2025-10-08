@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Salon Finder</title>
+    <title>Scout AI</title>
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,57 +15,90 @@
 <body>
     <div id="app">
         <header>
-            <h1>Salon Data Visualizer</h1>
-            <p>Find new leads with AI, or connect a Google Sheet to visualize and edit your data.</p>
+            <h1>Scout<span class="font-light">.ai</span></h1>
+            <p>The smartest way to find your next customer.</p>
         </header>
         <main>
             <div class="controls-container">
-                 <div class="control-group">
-                    <h3>1. Find New Leads with AI</h3>
-                    <div id="ai-search-container">
-                        <input type="text" id="city-input" placeholder="Enter City (e.g., Miami)" aria-label="City">
-                        <input type="text" id="state-input" placeholder="Enter State (e.g., FL)" aria-label="State">
-                        <button id="ai-search-button">Find Salons</button>
+                <div class="control-group">
+                    <h3>Connect to Google</h3>
+                    <p class="control-group-description">Sign in to save leads directly to Google Sheets or Drive.</p>
+                     <div class="input-wrapper">
+                        <label for="google-client-id-input">Your Google Client ID</label>
+                        <input type="text" id="google-client-id-input" placeholder="Paste your Google Client ID here">
                     </div>
+                    <div id="auth-container">
+                        <!-- Auth buttons will be rendered here by JS -->
+                    </div>
+                    <div id="auth-error-message" class="auth-error"></div>
                 </div>
                  <div class="control-group">
-                    <h3>2. Connect & Manage Your Sheet</h3>
-                    <div id="auth-container">
-                        <button id="authorize-button" disabled>Loading Auth...</button>
-                        <button id="signout-button" class="hidden">Sign Out</button>
-                    </div>
-
-                    <div id="sheet-container" class="hidden">
-                        <input type="text" id="sheet-url-input" placeholder="Enter your Google Sheet URL or ID" aria-label="Google Sheet URL">
-                        <button id="load-sheet-button">Load Data</button>
+                    <h3>Find New Leads with AI</h3>
+                    <div id="ai-search-container">
+                        <div class="input-wrapper">
+                            <label for="business-type-input">Business Type</label>
+                            <input type="text" id="business-type-input" placeholder="e.g., Coffee Shops, Salons">
+                        </div>
+                        <div class="location-inputs">
+                            <div class="input-wrapper">
+                                <label for="city-input">City</label>
+                                <input type="text" id="city-input" placeholder="e.g., San Francisco">
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="state-input">State</label>
+                                <input type="text" id="state-input" placeholder="e.g., CA">
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="search-radius-input">Radius (mi)</label>
+                                <input type="text" id="search-radius-input" placeholder="e.g., 5">
+                            </div>
+                        </div>
+                        <button id="ai-search-button"><span class="button-text">FIND LEADS</span></button>
                     </div>
                 </div>
             </div>
 
             <div class="main-actions">
-                <div id="search-container">
-                  <input type="search" id="search-input" placeholder="Filter current results..."/>
+                 <div class="filters-group">
+                    <div class="input-wrapper">
+                        <label for="search-input">Filter Current Results</label>
+                        <input type="search" id="search-input" placeholder="Filter by name, address, etc."/>
+                    </div>
+                     <div class="input-wrapper">
+                        <label for="instagram-handle-input">Instagram Follower Filter</label>
+                        <input type="text" id="instagram-handle-input" placeholder="Enter IG handle..."/>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="follows-filter-checkbox">
+                        <label for="follows-filter-checkbox">Only show followers</label>
+                    </div>
                 </div>
-                <div id="sort-container" class="hidden">
-                    <label for="sort-by-select">Sort by:</label>
-                    <select id="sort-by-select"></select>
-                    <button id="sort-direction-button" title="Toggle sort direction">ASC</button>
+                <div class="export-actions">
+                    <button type="button" id="save-to-sheets-button" class="hidden" disabled><span class="button-text">SAVE TO SHEETS</span></button>
+                    <button type="button" id="save-to-drive-button" class="hidden" disabled><span class="button-text">SAVE TO DRIVE</span></button>
+                    <button type="button" id="export-csv-button" class="hidden"><span class="button-text">EXPORT CSV</span></button>
                 </div>
-                <button type="button" id="export-button" class="hidden">Export to Sheet</button>
-                <button type="button" id="view-favorites-button">View Favorites</button>
-                <button type="button" id="share-button" class="hidden" title="Copy a shareable link to this view">Share View</button>
             </div>
-            <div id="loader" class="hidden"></div>
+            <div id="status-message"></div>
             <div id="content-wrapper">
                 <div id="map" class="hidden"></div>
-                <div id="results-container"></div>
-            </div>
-            <div id="favorites-container" class="hidden">
-                <h2>Favorite Salons</h2>
-                <div id="favorites-list"></div>
+                <div id="results-container">
+                    <p class="placeholder-text">Use the search above to find businesses with AI.</p>
+                </div>
             </div>
         </main>
     </div>
+
+    <div id="details-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-business-name"></h2>
+                <button id="modal-close-button" class="close-button" aria-label="Close details">&times;</button>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
@@ -78,7 +111,5 @@
       }
     </script>
     <script type="module" src="index.tsx"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
 </body>
 </html>
